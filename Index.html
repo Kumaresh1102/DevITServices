@@ -1,0 +1,1678 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DEV IT Group of Company</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700;800;900&family=Barlow+Condensed:wght@700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ── RESET & VARS ─────────────────────────── */
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --orange:#F97316;--orange-dark:#EA580C;
+  --dark:#0D0D0D;--dark2:#1A1A1A;
+  --gray:#6B7280;--border:#E5E7EB;
+}
+html{scroll-behavior:smooth}
+body{font-family:'Barlow',sans-serif;background:#fff;color:#111;overflow-x:hidden}
+
+/* ── PAGE SYSTEM ──────────────────────────── */
+.page{display:none;min-height:100vh}
+.page.active{display:block;animation:pgIn .4s ease both}
+@keyframes pgIn{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+
+/* ── NAVBAR ───────────────────────────────── */
+nav{position:fixed;top:0;left:0;right:0;z-index:2000;
+  background:rgba(255,255,255,.97);backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--border);padding:0 5%}
+.nav-inner{display:flex;align-items:center;justify-content:space-between;
+  height:72px;max-width:1280px;margin:0 auto}
+.logo{display:flex;align-items:center;gap:10px;cursor:pointer;text-decoration:none}
+.logo img{height:96px;width:auto;display:block}
+.logo-fallback{width:38px;height:38px;background:linear-gradient(135deg,#F97316,#EA580C);
+  border-radius:8px;display:flex;align-items:center;justify-content:center;
+  font-weight:900;color:#fff;font-size:13px}
+.logo-text{font-size:13px;line-height:1.2;font-weight:700;color:#111}
+.logo-text span{color:var(--orange);display:block}
+.nav-links{display:flex;align-items:center;gap:32px}
+.nav-links a{font-size:13px;font-weight:600;color:#374151;text-decoration:none;
+  letter-spacing:.5px;text-transform:uppercase;cursor:pointer;transition:color .2s;
+  padding:4px 0;position:relative}
+.nav-links a::after{content:'';position:absolute;bottom:-2px;left:0;
+  width:0;height:2px;background:var(--orange);transition:width .2s}
+.nav-links a:hover,.nav-links a.active{color:var(--orange)}
+.nav-links a:hover::after,.nav-links a.active::after{width:100%}
+.btn-quote{background:var(--orange);color:#fff;padding:10px 22px;border-radius:6px;
+  font-size:13px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;
+  cursor:pointer;border:none;transition:background .2s,transform .15s}
+.btn-quote:hover{background:var(--orange-dark);transform:translateY(-1px)}
+.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:4px}
+.hamburger span{display:block;width:24px;height:2px;background:#374151;transition:.3s}
+.mobile-menu{display:none;position:fixed;top:72px;left:0;right:0;background:#fff;
+  border-bottom:1px solid var(--border);padding:20px 5%;z-index:1999;
+  flex-direction:column;gap:0}
+.mobile-menu.open{display:flex}
+.mobile-menu a{font-size:15px;font-weight:600;color:#374151;cursor:pointer;
+  padding:14px 0;border-bottom:1px solid var(--border);text-decoration:none}
+.mobile-menu a:hover{color:var(--orange)}
+
+/* ── PAGE CONTENT OFFSET ──────────────────── */
+.page-content{padding-top:72px}
+
+/* ═══════════════════════════════════════════
+   HERO
+═══════════════════════════════════════════ */
+.hero{position:relative;min-height:92vh;display:flex;align-items:center;
+  background:#0D0D0D;overflow:hidden}
+#hero-canvas{position:absolute;inset:0;z-index:1;pointer-events:none}
+.hero-bg{position:absolute;inset:0;
+  background:url('https://images.unsplash.com/photo-1518770660439-4636190af475?w=1600&q=80')
+  center/cover no-repeat;opacity:.18;
+  animation:bgZoom 20s ease-in-out infinite alternate}
+@keyframes bgZoom{from{transform:scale(1)}to{transform:scale(1.07)}}
+.hero-grid{position:absolute;inset:0;
+  background-image:linear-gradient(rgba(249,115,22,.07) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(249,115,22,.07) 1px,transparent 1px);
+  background-size:60px 60px;
+  animation:gridScroll 25s linear infinite}
+@keyframes gridScroll{to{background-position:60px 60px,60px 60px}}
+/* glow orbs */
+.hero-orb{position:absolute;border-radius:50%;pointer-events:none;z-index:1;filter:blur(70px)}
+.hero-orb-1{width:480px;height:480px;
+  background:radial-gradient(circle,rgba(249,115,22,.2) 0%,transparent 70%);
+  top:-80px;right:-60px;animation:orbA 9s ease-in-out infinite alternate}
+.hero-orb-2{width:360px;height:360px;
+  background:radial-gradient(circle,rgba(249,115,22,.12) 0%,transparent 70%);
+  bottom:-40px;left:-40px;animation:orbA 7s ease-in-out infinite alternate-reverse}
+@keyframes orbA{from{transform:translate(0,0)}to{transform:translate(28px,-36px)}}
+/* scan line */
+.hero-scanline{position:absolute;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(249,115,22,.55),transparent);
+  z-index:2;pointer-events:none;animation:scan 7s linear infinite}
+@keyframes scan{0%{top:0%;opacity:0}5%{opacity:1}95%{opacity:.3}100%{top:100%;opacity:0}}
+/* floating badges */
+.fb{position:absolute;background:rgba(255,255,255,.05);
+  border:1px solid rgba(249,115,22,.25);backdrop-filter:blur(8px);
+  border-radius:8px;padding:8px 14px;font-size:11px;font-weight:700;
+  color:rgba(255,255,255,.55);letter-spacing:1.5px;text-transform:uppercase;
+  pointer-events:none;z-index:3;display:flex;align-items:center;gap:7px;
+  white-space:nowrap;opacity:0}
+.fb .dot{width:6px;height:6px;border-radius:50%;background:var(--orange);
+  animation:dotPulse 1.5s ease-in-out infinite}
+@keyframes dotPulse{0%,100%{opacity:.5;transform:scale(1)}50%{opacity:1;transform:scale(1.4)}}
+.fb1{top:22%;left:2.5%;animation:fbIn .7s ease 1.2s forwards,fbDrift1 8s ease-in-out 2s infinite alternate}
+.fb2{top:40%;right:2.5%;animation:fbIn .7s ease 1.4s forwards,fbDrift2 9s ease-in-out 2.2s infinite alternate}
+.fb3{bottom:24%;left:4%;animation:fbIn .7s ease 1.6s forwards,fbDrift1 7s ease-in-out 2.4s infinite alternate-reverse}
+.fb4{bottom:32%;right:3%;animation:fbIn .7s ease 1.8s forwards,fbDrift2 10s ease-in-out 2.6s infinite alternate-reverse}
+@keyframes fbIn{to{opacity:1}}
+@keyframes fbDrift1{from{transform:translateY(0)}to{transform:translateY(-14px)}}
+@keyframes fbDrift2{from{transform:translateY(0)}to{transform:translateY(12px)}}
+
+/* hero content elements — initial hidden, animated by JS */
+.hero-content{position:relative;z-index:4;max-width:1280px;margin:0 auto;
+  padding:80px 5%;text-align:center;width:100%}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;
+  background:rgba(249,115,22,.15);border:1px solid rgba(249,115,22,.3);
+  color:var(--orange);padding:6px 18px;border-radius:50px;
+  font-size:12px;font-weight:600;letter-spacing:1px;text-transform:uppercase;
+  margin-bottom:28px;opacity:0}
+.hero-badge::before,.hero-badge::after{content:'';display:inline-block;
+  width:22px;height:1px;background:var(--orange)}
+.hero h1{font-family:'Barlow Condensed',sans-serif;
+  font-size:clamp(40px,7vw,86px);font-weight:900;color:#fff;
+  line-height:1.0;letter-spacing:-1px;margin-bottom:24px;text-transform:uppercase}
+.hero h1 .brand{color:var(--orange)}
+/* each word wrapped by JS */
+.hw{display:inline-block;opacity:0;transform:translateY(36px) rotateX(-18deg);
+  transform-origin:top center;transition:opacity .65s ease,transform .65s ease}
+.hw.visible{opacity:1;transform:translateY(0) rotateX(0)}
+.hero-p{font-size:clamp(14px,1.8vw,17px);color:rgba(255,255,255,.7);
+  max-width:640px;margin:0 auto 40px;line-height:1.75;opacity:0;
+  transform:translateY(24px);transition:opacity .8s ease,transform .8s ease}
+.hero-p.visible{opacity:1;transform:translateY(0)}
+.hero-btns{display:flex;justify-content:center;gap:16px;flex-wrap:wrap}
+.btn-primary{background:var(--orange);color:#fff;padding:14px 32px;border-radius:6px;
+  font-size:14px;font-weight:700;letter-spacing:1px;text-transform:uppercase;
+  cursor:pointer;border:none;transition:all .2s;display:inline-flex;align-items:center;gap:8px;
+  opacity:0;transform:translateY(20px) scale(.9)}
+.btn-primary.visible{opacity:1;transform:translateY(0) scale(1)}
+.btn-primary:hover{background:var(--orange-dark);transform:translateY(-2px)!important;
+  box-shadow:0 8px 24px rgba(249,115,22,.4)}
+.btn-outline{background:transparent;color:#fff;padding:14px 32px;border-radius:6px;
+  font-size:14px;font-weight:700;letter-spacing:1px;text-transform:uppercase;
+  cursor:pointer;border:2px solid rgba(255,255,255,.3);transition:all .2s;
+  display:inline-flex;align-items:center;gap:8px;
+  opacity:0;transform:translateY(20px) scale(.9)}
+.btn-outline.visible{opacity:1;transform:translateY(0) scale(1)}
+.btn-outline:hover{border-color:var(--orange);color:var(--orange)}
+/* stat chips */
+.hero-chips{display:flex;justify-content:center;gap:14px;flex-wrap:wrap;
+  margin-top:48px;opacity:0;transform:translateY(20px);
+  transition:opacity .8s ease,transform .8s ease}
+.hero-chips.visible{opacity:1;transform:translateY(0)}
+.chip{background:rgba(255,255,255,.06);border:1px solid rgba(249,115,22,.2);
+  border-radius:10px;padding:14px 22px;text-align:center;
+  backdrop-filter:blur(6px);min-width:105px}
+.chip-num{font-family:'Barlow Condensed',sans-serif;font-size:28px;font-weight:900;
+  color:#F97316;display:block;line-height:1;margin-bottom:4px}
+.chip-lbl{font-size:10px;color:rgba(255,255,255,.45);font-weight:600;
+  letter-spacing:1.5px;text-transform:uppercase}
+/* typewriter bar */
+.typer-bar{height:24px;display:flex;align-items:center;justify-content:center;
+  gap:8px;margin-top:-32px;margin-bottom:16px;opacity:0;transition:opacity .6s ease}
+.typer-bar.visible{opacity:1}
+.typer-dot{width:6px;height:6px;border-radius:50%;background:#F97316;flex-shrink:0;
+  animation:dotPulse 1.3s ease-in-out infinite}
+#typer-text{font-size:12px;color:rgba(255,255,255,.4);letter-spacing:2px;
+  text-transform:uppercase;font-weight:600;min-width:4px}
+.typer-cursor{color:#F97316;animation:blink .8s step-end infinite;
+  font-size:15px;font-weight:300;line-height:1}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+/* scroll indicator */
+.hero-scroll{position:absolute;bottom:28px;left:50%;transform:translateX(-50%);
+  display:flex;flex-direction:column;align-items:center;gap:8px;
+  color:rgba(255,255,255,.4);font-size:11px;letter-spacing:2px;text-transform:uppercase;
+  z-index:4;opacity:0;transition:opacity .8s ease}
+.hero-scroll.visible{opacity:1}
+.scroll-dot{width:1px;height:36px;
+  background:linear-gradient(to bottom,var(--orange),transparent);
+  animation:scrollPulse 2s ease-in-out infinite}
+@keyframes scrollPulse{0%,100%{height:36px;opacity:.5}50%{height:50px;opacity:1}}
+
+/* ── SECTIONS ─────────────────────────────── */
+.section-tag{display:inline-flex;align-items:center;gap:8px;color:var(--orange);
+  font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin-bottom:12px}
+.section-tag::before,.section-tag::after{content:'';display:inline-block;
+  width:20px;height:1px;background:var(--orange)}
+.section-title{font-family:'Barlow Condensed',sans-serif;
+  font-size:clamp(28px,4vw,52px);font-weight:800;line-height:1.1;
+  margin-bottom:20px;text-transform:uppercase}
+.section-title span{color:var(--orange)}
+
+/* ── WHO WE ARE ───────────────────────────── */
+.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center}
+.about-list{list-style:none;display:flex;flex-direction:column;gap:10px;margin:20px 0 28px}
+.about-list li{display:flex;align-items:center;gap:10px;font-size:14px;color:#374151;font-weight:500}
+.about-list li::before{content:'';width:8px;height:8px;border-radius:50%;
+  background:var(--orange);flex-shrink:0}
+.about-quote{background:#F9F9F9;border-left:3px solid var(--orange);
+  padding:20px 24px;border-radius:0 8px 8px 0;margin-bottom:28px}
+.about-quote p{font-size:14px;color:#374151;font-style:italic;line-height:1.7;margin-bottom:12px}
+.quote-author{display:flex;align-items:center;gap:12px}
+.quote-avatar{width:96px;height:96px;border-radius:50%;overflow:hidden;flex-shrink:0}
+.quote-avatar img{width:100%;height:100%;object-fit:cover}
+.quote-avatar-initials{width:96px;height:96px;border-radius:50%;background:var(--orange);
+  display:flex;align-items:center;justify-content:center;
+  color:#fff;font-weight:800;font-size:14px;flex-shrink:0}
+.quote-info strong{display:block;font-size:13px;font-weight:700;color:#111}
+.quote-info span{font-size:11px;color:var(--orange);font-weight:600;
+  text-transform:uppercase;letter-spacing:1px}
+.about-cta{display:flex;align-items:center;gap:20px;flex-wrap:wrap}
+.btn-learn{background:var(--orange);color:#fff;padding:12px 28px;border-radius:6px;
+  font-size:13px;font-weight:700;letter-spacing:1px;text-transform:uppercase;
+  cursor:pointer;border:none;transition:all .2s}
+.btn-learn:hover{background:var(--orange-dark);transform:translateY(-1px)}
+.phone-cta{display:flex;align-items:center;gap:12px}
+.phone-icon-wrap{width:44px;height:44px;border-radius:50%;border:2px solid #111;
+  display:flex;align-items:center;justify-content:center;font-size:18px}
+.phone-icon-wrap img{width:28px;height:28px;object-fit:contain}
+.phone-text span{display:block;font-size:10px;color:#6B7280;font-weight:600;
+  letter-spacing:1px;text-transform:uppercase}
+.phone-text strong{font-size:14px;font-weight:700;color:#111}
+.about-imgs{display:grid;grid-template-columns:1fr 1fr;gap:12px;position:relative}
+.about-img-main{grid-column:1;grid-row:1/3;border-radius:12px;overflow:hidden;height:360px}
+.about-img-main img{width:100%;height:100%;object-fit:cover}
+.about-img-sm{border-radius:10px;overflow:hidden;height:170px;position:relative}
+.about-img-sm img{width:100%;height:100%;object-fit:cover}
+.img-label{position:absolute;bottom:10px;left:10px;background:rgba(0,0,0,.85);
+  color:#fff;padding:7px 12px;border-radius:5px;font-size:10px;
+  font-weight:700;letter-spacing:1px;text-transform:uppercase}
+.img-label span{color:var(--orange);display:block;font-size:9px;letter-spacing:2px;margin-top:2px}
+
+/* ── STATS ────────────────────────────────── */
+.stats-bar{background:#F9F9F9;padding:60px 5%;
+  border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:40px;
+  max-width:1280px;margin:0 auto;text-align:center}
+.stat-num{font-family:'Barlow Condensed',sans-serif;
+  font-size:clamp(40px,5vw,70px);font-weight:900;line-height:1;margin-bottom:8px}
+.stat-num.orange{color:var(--orange)}
+.stat-label{font-size:13px;color:#6B7280;font-weight:500;
+  text-transform:uppercase;letter-spacing:1px}
+
+/* ── SERVICES (home) ──────────────────────── */
+.services-bg{background:#F9F9F9;padding:90px 0}
+.services-inner{max-width:1280px;margin:0 auto;padding:0 5%}
+.services-header{text-align:center;margin-bottom:52px}
+.services-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+.service-card{background:#fff;border:1px solid var(--border);border-radius:12px;
+  padding:32px 26px;transition:all .3s;cursor:pointer;position:relative;overflow:hidden}
+.service-card::before{content:'';position:absolute;inset:0;background:var(--orange);
+  transform:translateY(100%);transition:transform .35s;z-index:0}
+.service-card:hover::before{transform:translateY(0)}
+.service-card > *{position:relative;z-index:1}
+.service-icon{width:54px;height:54px;background:rgba(249,115,22,.1);border-radius:12px;
+  display:flex;align-items:center;justify-content:center;margin-bottom:18px;
+  font-size:24px;color:var(--orange);transition:all .3s}
+.service-icon img{width:34px;height:34px;object-fit:contain;display:block}
+.service-card:hover .service-icon{background:rgba(255,255,255,.2)}
+.service-card h3{font-size:16px;font-weight:700;color:#111;margin-bottom:9px;transition:color .3s}
+.service-card p{font-size:13px;color:#6B7280;line-height:1.65;transition:color .3s}
+.service-card:hover h3,.service-card:hover p{color:#fff}
+.services-cta{text-align:center;margin-top:44px;display:flex;align-items:center;
+  justify-content:center;gap:16px;flex-wrap:wrap}
+.services-cta p{font-size:15px;color:#374151;font-weight:500}
+
+/* ── PROJECTS ─────────────────────────────── */
+.projects-bg{background:var(--dark);padding:90px 0}
+.projects-inner{max-width:1280px;margin:0 auto;padding:0 5%}
+.projects-head{display:grid;grid-template-columns:1fr 1fr;gap:56px;
+  align-items:start;margin-bottom:52px}
+.projects-desc{font-size:14px;color:rgba(255,255,255,.6);line-height:1.8;margin-top:12px}
+.projects-grid{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+.project-card{background:var(--dark2);border:1px solid rgba(255,255,255,.08);
+  border-radius:12px;overflow:hidden;cursor:pointer;
+  transition:transform .3s,box-shadow .3s}
+.project-card:hover{transform:translateY(-6px);box-shadow:0 20px 60px rgba(0,0,0,.4)}
+.project-img{height:220px;overflow:hidden;position:relative}
+.project-img img{width:100%;height:100%;object-fit:cover;transition:transform .4s}
+.project-card:hover .project-img img{transform:scale(1.06)}
+.project-tag{position:absolute;bottom:12px;left:12px;background:var(--orange);
+  color:#fff;padding:4px 12px;border-radius:4px;font-size:11px;
+  font-weight:700;letter-spacing:1px;text-transform:uppercase}
+.project-arrow{position:absolute;top:12px;right:12px;width:34px;height:34px;
+  background:var(--orange);border-radius:6px;display:flex;align-items:center;
+  justify-content:center;color:#fff;font-size:15px}
+.project-info{padding:20px 22px}
+.project-info h3{font-size:16px;font-weight:700;color:#fff;margin-bottom:10px}
+.project-meta{display:flex;gap:18px;flex-wrap:wrap}
+.project-meta span{font-size:12px;color:rgba(255,255,255,.5)}
+.project-meta strong{color:rgba(255,255,255,.8);font-weight:600}
+.projects-btns{text-align:center;margin-top:44px;display:flex;justify-content:center;gap:16px}
+.btn-ghost{background:transparent;color:#fff;padding:13px 28px;border-radius:6px;
+  font-size:13px;font-weight:700;letter-spacing:1px;text-transform:uppercase;
+  cursor:pointer;border:2px solid rgba(255,255,255,.2);transition:all .2s}
+.btn-ghost:hover{border-color:var(--orange);color:var(--orange)}
+
+/* ── CLIENTS ──────────────────────────────── */
+.clients-section{padding:70px 5%;border-bottom:1px solid var(--border)}
+.clients-inner{max-width:1280px;margin:0 auto;display:grid;
+  grid-template-columns:auto 1fr;gap:56px;align-items:center}
+.clients-logos{display:flex;align-items:center;gap:20px;flex-wrap:wrap}
+.client-logo{padding:12px 20px;border:1px solid var(--border);border-radius:8px;
+  display:flex;align-items:center;justify-content:center;min-width:110px;height:54px;
+  font-weight:800;font-size:12px;color:#374151;letter-spacing:1px;
+  transition:border-color .2s;text-align:center;line-height:1.3;cursor:default}
+.client-logo:hover{border-color:var(--orange);color:var(--orange)}
+
+/* ── INDUSTRIES ───────────────────────────── */
+.industries-bg{background:#F9F9F9;padding:90px 0}
+.industries-inner{max-width:1280px;margin:0 auto;padding:0 5%;text-align:center}
+.industries-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-top:44px}
+.industry-card{background:#fff;border:1px solid var(--border);border-radius:10px;
+  padding:28px 18px;text-align:center;transition:all .3s;cursor:pointer}
+.industry-card:hover{border-color:var(--orange);transform:translateY(-4px);
+  box-shadow:0 12px 40px rgba(249,115,22,.1)}
+.industry-icon{width:52px;height:52px;background:rgba(249,115,22,.1);border-radius:10px;
+  display:flex;align-items:center;justify-content:center;margin:0 auto 14px;
+  font-size:22px}
+.industry-card h4{font-size:14px;font-weight:700;color:#111;margin-bottom:5px}
+.industry-card p{font-size:12px;color:#6B7280;line-height:1.6}
+
+/* ── CTA BANNER ───────────────────────────── */
+.cta-banner{background:var(--orange);padding:70px 5%;text-align:center}
+.cta-banner h2{font-family:'Barlow Condensed',sans-serif;
+  font-size:clamp(26px,4vw,50px);font-weight:900;color:#fff;
+  text-transform:uppercase;margin-bottom:12px}
+.cta-banner p{font-size:15px;color:rgba(255,255,255,.88);margin-bottom:32px}
+.cta-banner button{background:#fff;color:var(--orange);padding:14px 36px;
+  border-radius:6px;font-size:14px;font-weight:800;letter-spacing:1px;
+  text-transform:uppercase;cursor:pointer;border:none;transition:transform .2s}
+.cta-banner button:hover{transform:translateY(-2px)}
+
+/* ── FOOTER ───────────────────────────────── */
+footer{background:var(--dark);color:#fff;padding:70px 5% 30px}
+.footer-inner{max-width:1280px;margin:0 auto}
+.footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:44px;margin-bottom:56px}
+.footer-brand p{font-size:13px;color:rgba(255,255,255,.5);line-height:1.8;margin:14px 0 22px}
+.footer-social{display:flex;gap:10px}
+.social-btn{width:36px;height:36px;border:1px solid rgba(255,255,255,.15);border-radius:6px;
+  display:flex;align-items:center;justify-content:center;font-size:13px;
+  cursor:pointer;transition:all .2s;color:rgba(255,255,255,.5)}
+.social-btn:hover{background:var(--orange);border-color:var(--orange);color:#fff}
+.footer-col h4{font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;
+  color:#fff;margin-bottom:18px;padding-bottom:10px;
+  border-bottom:1px solid rgba(255,255,255,.08)}
+.footer-links{list-style:none;display:flex;flex-direction:column;gap:10px}
+.footer-links li,.footer-links li a{font-size:13px;color:rgba(255,255,255,.5);
+  cursor:pointer;transition:color .2s;text-decoration:none}
+.footer-links li:hover,.footer-links li a:hover{color:var(--orange)}
+.footer-contact-item{display:flex;align-items:flex-start;gap:10px;margin-bottom:12px}
+.fci-icon{width:30px;height:30px;background:rgba(249,115,22,.1);border-radius:6px;
+  display:flex;align-items:center;justify-content:center;font-size:13px;
+  color:var(--orange);flex-shrink:0;margin-top:1px}
+.footer-contact-item p{font-size:13px;color:rgba(255,255,255,.5);line-height:1.6}
+.footer-bottom{border-top:1px solid rgba(255,255,255,.08);padding-top:26px;
+  display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
+.footer-bottom p{font-size:12px;color:rgba(255,255,255,.3)}
+.footer-bottom span{color:var(--orange)}
+.footer-back{background:none;border:1px solid rgba(255,255,255,.2);
+  color:rgba(255,255,255,.45);padding:6px 16px;border-radius:4px;
+  cursor:pointer;font-size:12px;transition:all .2s}
+.footer-back:hover{border-color:var(--orange);color:var(--orange)}
+
+/* ── INNER PAGE HERO ──────────────────────── */
+.page-hero{background:var(--dark);padding:100px 5% 68px;text-align:center;position:relative;overflow:hidden}
+.page-hero::before{content:'';position:absolute;inset:0;
+  background-image:linear-gradient(rgba(249,115,22,.055) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(249,115,22,.055) 1px,transparent 1px);
+  background-size:50px 50px}
+.page-hero-content{position:relative;z-index:2}
+.breadcrumb{display:flex;justify-content:center;align-items:center;gap:8px;
+  margin-bottom:18px;font-size:11px;color:rgba(255,255,255,.4);
+  text-transform:uppercase;letter-spacing:1px}
+.breadcrumb span{color:var(--orange)}
+.page-hero h1{font-family:'Barlow Condensed',sans-serif;
+  font-size:clamp(34px,5vw,64px);font-weight:900;color:#fff;
+  text-transform:uppercase;margin-bottom:14px}
+.page-hero h1 span{color:var(--orange)}
+.page-hero > .page-hero-content > p{font-size:15px;color:rgba(255,255,255,.6);
+  max-width:540px;margin:0 auto}
+
+/* ── SERVICES PAGE ────────────────────────── */
+.services-page{padding:80px 5%}
+.services-page-inner{max-width:1280px;margin:0 auto}
+.services-page-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:26px}
+.service-page-card{border:1px solid var(--border);border-radius:14px;
+  padding:34px 28px;transition:all .3s;cursor:default}
+.service-page-card:hover{border-color:var(--orange);transform:translateY(-4px);
+  box-shadow:0 12px 40px rgba(249,115,22,.1)}
+.service-page-card h3{font-size:18px;font-weight:700;margin-bottom:10px;margin-top:18px}
+.service-page-card > p{font-size:14px;color:#6B7280;line-height:1.7;margin-bottom:18px}
+.service-features{list-style:none;display:flex;flex-direction:column;gap:8px;margin-bottom:24px}
+.service-features li{font-size:13px;color:#374151;display:flex;align-items:center;gap:8px}
+.service-features li::before{content:'✓';color:var(--orange);font-weight:700}
+
+/* ── SOLUTIONS PAGE ───────────────────────── */
+.solutions-page{padding:80px 5%}
+.solutions-inner{max-width:1280px;margin:0 auto}
+.solutions-tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:44px;justify-content:center}
+.tab-btn{padding:10px 24px;border:1px solid var(--border);border-radius:50px;
+  font-size:13px;font-weight:600;cursor:pointer;background:#fff;color:#374151;transition:all .2s}
+.tab-btn.active,.tab-btn:hover{background:var(--orange);color:#fff;border-color:var(--orange)}
+.solution-item{display:grid;grid-template-columns:1fr 1fr;gap:56px;
+  align-items:center;padding:56px 0;border-bottom:1px solid var(--border)}
+.solution-item:last-child{border-bottom:none}
+.solution-item.reverse .sol-img{order:2}
+.solution-item.reverse .sol-content{order:1}
+.sol-img{border-radius:14px;overflow:hidden;height:300px}
+.sol-img img{width:100%;height:100%;object-fit:cover}
+.sol-num{font-family:'Barlow Condensed',sans-serif;font-size:80px;font-weight:900;
+  color:rgba(249,115,22,.1);line-height:1;margin-bottom:-16px}
+.sol-content h3{font-size:24px;font-weight:800;margin-bottom:10px}
+.sol-content p{font-size:14px;color:#6B7280;line-height:1.8;margin-bottom:22px}
+
+/* ── PRODUCTS PAGE ────────────────────────── */
+.products-page{padding:80px 5%}
+.products-inner{max-width:1280px;margin:0 auto}
+.products-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:26px}
+.product-card{border:1px solid var(--border);border-radius:14px;overflow:hidden;
+  transition:all .3s;cursor:default}
+.product-card:hover{border-color:var(--orange);transform:translateY(-4px);
+  box-shadow:0 16px 48px rgba(249,115,22,.12)}
+.product-img{height:180px;overflow:hidden;background:#F9F9F9;
+  display:flex;align-items:center;justify-content:center}
+.product-img img{width:100%;height:100%;object-fit:cover}
+.product-body{padding:22px}
+.product-badge{background:rgba(249,115,22,.1);color:var(--orange);padding:4px 10px;
+  border-radius:4px;font-size:11px;font-weight:700;letter-spacing:1px;
+  text-transform:uppercase;display:inline-block;margin-bottom:10px}
+.product-body h3{font-size:16px;font-weight:700;margin-bottom:7px}
+.product-body p{font-size:13px;color:#6B7280;line-height:1.6;margin-bottom:14px}
+.product-price{font-size:21px;font-weight:800;color:var(--orange)}
+.product-price span{font-size:12px;color:#9CA3AF;font-weight:400}
+
+/* ── CONTACT PAGE ─────────────────────────── */
+.contact-page{padding:80px 5%}
+.contact-inner{max-width:1280px;margin:0 auto;display:grid;
+  grid-template-columns:1fr 1.5fr;gap:56px}
+.contact-info-item{display:flex;align-items:flex-start;gap:14px;
+  padding:22px 0;border-bottom:1px solid var(--border)}
+.contact-info-item:first-child{padding-top:0}
+.cil-icon{width:46px;height:46px;background:rgba(249,115,22,.1);border-radius:10px;
+  display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.contact-info-item h4{font-size:14px;font-weight:700;color:#111;margin-bottom:3px}
+.contact-info-item p{font-size:13px;color:#6B7280;line-height:1.6}
+.contact-form{background:#F9F9F9;border-radius:16px;padding:38px}
+.contact-form h3{font-size:22px;font-weight:800;margin-bottom:6px}
+.contact-form > p{font-size:14px;color:#6B7280;margin-bottom:28px}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}
+.form-group{display:flex;flex-direction:column;gap:5px;margin-bottom:14px}
+.form-group label{font-size:11px;font-weight:700;color:#374151;
+  letter-spacing:.5px;text-transform:uppercase}
+.form-group input,.form-group textarea,.form-group select{
+  padding:11px 14px;border:1px solid var(--border);border-radius:8px;
+  font-size:14px;font-family:'Barlow',sans-serif;outline:none;
+  transition:border-color .2s;background:#fff}
+.form-group input:focus,.form-group textarea:focus,.form-group select:focus{border-color:var(--orange)}
+.form-group textarea{resize:vertical;min-height:110px}
+.form-submit{background:var(--orange);color:#fff;padding:14px 32px;border-radius:8px;
+  font-size:14px;font-weight:700;letter-spacing:1px;text-transform:uppercase;
+  cursor:pointer;border:none;width:100%;transition:all .2s}
+.form-submit:hover{background:var(--orange-dark);transform:translateY(-1px)}
+
+/* ── ABOUT PAGE EXTRAS ────────────────────── */
+.about-values-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-top:44px}
+.value-card{text-align:center;padding:34px 18px;border:1px solid var(--border);
+  border-radius:12px;transition:all .3s}
+.value-card:hover{border-color:var(--orange);transform:translateY(-4px)}
+.value-icon{width:58px;height:58px;background:rgba(249,115,22,.1);border-radius:12px;
+  display:flex;align-items:center;justify-content:center;margin:0 auto 14px;font-size:24px}
+.value-card h4{font-size:15px;font-weight:700;margin-bottom:7px}
+.value-card p{font-size:13px;color:#6B7280;line-height:1.6}
+.team-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:22px;margin-top:44px}
+.team-card{text-align:center;cursor:default}
+.team-avatar{position:relative;width:100%;height:220px;border-radius:12px;
+  background:linear-gradient(135deg,#1A1A1A,#2D2D2D);display:flex;
+  align-items:center;justify-content:center;margin-bottom:14px;font-size:38px;
+  color:rgba(249,115,22,.6);font-weight:900;font-family:'Barlow Condensed',sans-serif;
+  border:2px solid var(--border);transition:border-color .3s;overflow:hidden}
+.team-avatar img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 15%;display:block}
+.team-card:hover .team-avatar{border-color:var(--orange)}
+.team-card h4{font-size:15px;font-weight:700;margin-bottom:3px}
+.team-card p{font-size:12px;color:var(--orange);font-weight:600;
+  text-transform:uppercase;letter-spacing:1px}
+
+/* ── NOTIFICATION ─────────────────────────── */
+.notification{position:fixed;bottom:26px;right:26px;background:var(--dark);
+  color:#fff;padding:13px 18px;border-radius:10px;font-size:13px;font-weight:600;
+  display:flex;align-items:center;gap:10px;z-index:9999;
+  transform:translateY(80px);opacity:0;transition:all .4s;
+  pointer-events:none;max-width:300px}
+.notification.show{transform:translateY(0);opacity:1}
+.notif-check{width:22px;height:22px;background:var(--orange);border-radius:50%;
+  display:flex;align-items:center;justify-content:center;font-size:11px;flex-shrink:0}
+
+/* ── RESPONSIVE ───────────────────────────── */
+@media(max-width:1024px){
+  .about-grid,.projects-head,.projects-grid,.contact-inner{grid-template-columns:1fr}
+  .solution-item{grid-template-columns:1fr}
+  .solution-item.reverse .sol-img,.solution-item.reverse .sol-content{order:unset}
+  .services-grid,.services-page-grid,.products-grid{grid-template-columns:repeat(2,1fr)}
+  .industries-grid,.about-values-grid,.team-grid{grid-template-columns:repeat(2,1fr)}
+  .footer-grid{grid-template-columns:1fr 1fr}
+  .stats-grid{grid-template-columns:repeat(2,1fr)}
+  .clients-inner{grid-template-columns:1fr}
+  .fb{display:none}
+}
+@media(max-width:768px){
+  .nav-links,.btn-quote{display:none}
+  .hamburger{display:flex}
+  .services-grid,.services-page-grid,.products-grid,.form-row{grid-template-columns:1fr}
+  .industries-grid,.about-values-grid,.team-grid{grid-template-columns:repeat(2,1fr)}
+  .stats-grid{grid-template-columns:1fr 1fr}
+  .hero-btns{flex-direction:column;align-items:center}
+  .about-imgs{grid-template-columns:1fr}
+  .about-img-main{height:240px;grid-row:auto}
+  .about-img-sm{height:190px}
+  .footer-grid{grid-template-columns:1fr}
+  .chip{min-width:80px;padding:10px 14px}
+  .chip-num{font-size:22px}
+}
+@media(max-width:480px){
+  .industries-grid,.about-values-grid,.team-grid{grid-template-columns:1fr}
+  .projects-grid{grid-template-columns:1fr}
+}
+
+/* ═══════════════════════════════════════
+   OFFICE LOCATION SECTION
+═══════════════════════════════════════ */
+.location-section{
+  background:#0D0D0D;
+  padding:90px 0;
+  position:relative;
+  overflow:hidden;
+}
+.location-section::before{
+  content:'';
+  position:absolute;inset:0;
+  background-image:
+    linear-gradient(rgba(249,115,22,.06) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(249,115,22,.06) 1px,transparent 1px);
+  background-size:50px 50px;
+  pointer-events:none;
+}
+/* corner accent lines */
+.location-section::after{
+  content:'';
+  position:absolute;
+  top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,transparent,var(--orange),transparent);
+}
+.location-inner{
+  max-width:1280px;
+  margin:0 auto;
+  padding:0 5%;
+  position:relative;
+  z-index:1;
+}
+.location-header{
+  text-align:center;
+  margin-bottom:56px;
+}
+.location-header .section-tag{justify-content:center}
+.location-header h2{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:clamp(30px,4.5vw,52px);
+  font-weight:900;
+  color:#fff;
+  text-transform:uppercase;
+  line-height:1.1;
+  margin-bottom:14px;
+}
+.location-header h2 span{color:var(--orange)}
+.location-header p{
+  font-size:15px;
+  color:rgba(255,255,255,.55);
+  max-width:520px;
+  margin:0 auto;
+  line-height:1.7;
+}
+
+/* ── MAIN GRID ── */
+.location-grid{
+  display:none;
+}
+
+/* ── LEFT PANEL ── */
+.location-panel{
+  display:flex;
+  flex-direction:column;
+  gap:0;
+}
+
+/* address card */
+.loc-address-card{
+  background:rgba(255,255,255,.04);
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:16px 16px 0 0;
+  padding:32px 28px;
+  border-bottom:none;
+}
+.loc-office-badge{
+  display:inline-flex;align-items:center;gap:8px;
+  background:rgba(249,115,22,.15);
+  border:1px solid rgba(249,115,22,.3);
+  color:var(--orange);
+  padding:5px 14px;
+  border-radius:50px;
+  font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;
+  margin-bottom:20px;
+}
+.loc-office-badge::before{
+  content:'';width:6px;height:6px;border-radius:50%;background:var(--orange);
+  animation:locDot 1.8s ease-in-out infinite;
+}
+@keyframes locDot{0%,100%{opacity:.4;transform:scale(1)}50%{opacity:1;transform:scale(1.4)}}
+.loc-address-card h3{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:22px;font-weight:800;color:#fff;
+  text-transform:uppercase;letter-spacing:.5px;
+  margin-bottom:18px;
+}
+.loc-address-line{
+  display:flex;align-items:flex-start;gap:12px;
+  margin-bottom:12px;
+}
+.loc-addr-icon{
+  width:34px;height:34px;
+  background:rgba(249,115,22,.12);
+  border-radius:8px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:15px;flex-shrink:0;margin-top:1px;
+}
+.loc-addr-text{font-size:14px;color:rgba(255,255,255,.75);line-height:1.65}
+.loc-addr-text strong{color:#fff;display:block;font-size:12px;
+  letter-spacing:1px;text-transform:uppercase;margin-bottom:3px;
+  color:rgba(255,255,255,.4);font-weight:600}
+
+/* contact details strip */
+.loc-contacts{
+  background:rgba(255,255,255,.03);
+  border:1px solid rgba(255,255,255,.08);
+  border-top:1px solid rgba(249,115,22,.15);
+  border-radius:0;
+  padding:0 28px;
+}
+.loc-contact-row{
+  display:flex;align-items:center;gap:14px;
+  padding:16px 0;
+  border-bottom:1px solid rgba(255,255,255,.06);
+  transition:background .2s;
+}
+.loc-contact-row:last-child{border-bottom:none}
+.loc-contact-icon{
+  width:38px;height:38px;
+  background:rgba(249,115,22,.1);border-radius:8px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:16px;flex-shrink:0;
+  transition:background .2s;
+}
+.loc-contact-row:hover .loc-contact-icon{background:rgba(249,115,22,.25)}
+.loc-contact-info{flex:1}
+.loc-contact-info label{
+  display:block;font-size:10px;font-weight:700;letter-spacing:1.5px;
+  text-transform:uppercase;color:rgba(255,255,255,.35);margin-bottom:2px;
+}
+.loc-contact-info a,
+.loc-contact-info span{
+  font-size:14px;font-weight:600;color:rgba(255,255,255,.8);
+  text-decoration:none;transition:color .2s;display:block;line-height:1.4;
+}
+.loc-contact-info a:hover{color:var(--orange)}
+
+/* hours */
+.loc-hours{
+  background:rgba(255,255,255,.03);
+  border:1px solid rgba(255,255,255,.08);
+  border-top:none;
+  border-radius:0 0 16px 16px;
+  padding:20px 28px;
+}
+.loc-hours-row{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:8px 0;border-bottom:1px solid rgba(255,255,255,.05);
+  font-size:13px;
+}
+.loc-hours-row:last-child{border-bottom:none}
+.loc-hours-row .day{color:rgba(255,255,255,.5);font-weight:500}
+.loc-hours-row .time{color:#fff;font-weight:600}
+.loc-hours-row .badge-open{
+  background:rgba(34,197,94,.15);color:#4ade80;
+  padding:2px 10px;border-radius:50px;font-size:10px;font-weight:700;letter-spacing:1px;
+}
+.loc-hours-row .badge-closed{
+  background:rgba(239,68,68,.12);color:#f87171;
+  padding:2px 10px;border-radius:50px;font-size:10px;font-weight:700;letter-spacing:1px;
+}
+
+/* ── MAP + CTA ── */
+.location-map-col{
+  display:flex;flex-direction:column;gap:0;
+  width:100%;
+}
+.loc-map-wrap{
+  position:relative;
+  border-radius:16px 16px 0 0;
+  overflow:hidden;
+  min-height:480px;
+  border:1px solid rgba(255,255,255,.08);
+  border-bottom:none;
+}
+.loc-map-wrap iframe{
+  width:100%;height:100%;min-height:480px;
+  display:block;border:none;filter:grayscale(20%) contrast(1.05);
+  transition:filter .3s;
+}
+.loc-map-wrap:hover iframe{filter:grayscale(0%) contrast(1)}
+/* orange corner pin overlay */
+.loc-map-overlay{
+  position:absolute;top:14px;left:14px;
+  background:rgba(13,13,13,.88);
+  backdrop-filter:blur(8px);
+  border:1px solid rgba(249,115,22,.3);
+  border-radius:10px;padding:10px 14px;
+  pointer-events:none;
+}
+.loc-map-overlay p{font-size:11px;color:rgba(255,255,255,.5);
+  text-transform:uppercase;letter-spacing:1px;margin-bottom:2px;font-weight:600}
+.loc-map-overlay strong{font-size:13px;color:#fff;font-weight:700}
+
+/* CTA strip */
+.loc-cta-strip{
+  background:rgba(249,115,22,.08);
+  border:1px solid rgba(249,115,22,.2);
+  border-top:2px solid var(--orange);
+  border-radius:0 0 16px 16px;
+  padding:22px 28px;
+  display:flex;align-items:center;justify-content:space-between;
+  gap:16px;flex-wrap:wrap;
+}
+.loc-cta-text h4{
+  font-size:16px;font-weight:800;color:#fff;margin-bottom:4px;
+}
+.loc-cta-text p{font-size:13px;color:rgba(255,255,255,.5)}
+.loc-cta-btns{display:flex;gap:10px;flex-wrap:wrap}
+.btn-directions{
+  display:inline-flex;align-items:center;gap:8px;
+  background:var(--orange);color:#fff;
+  padding:12px 22px;border-radius:8px;
+  font-size:13px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;
+  text-decoration:none;border:none;cursor:pointer;
+  transition:all .2s;
+}
+.btn-directions:hover{
+  background:var(--orange-dark);transform:translateY(-2px);
+  box-shadow:0 8px 24px rgba(249,115,22,.4);
+}
+.btn-directions svg{width:16px;height:16px;flex-shrink:0}
+.btn-streetview{
+  display:inline-flex;align-items:center;gap:8px;
+  background:rgba(255,255,255,.07);color:rgba(255,255,255,.8);
+  padding:12px 18px;border-radius:8px;
+  font-size:13px;font-weight:600;letter-spacing:.5px;text-transform:uppercase;
+  text-decoration:none;border:1px solid rgba(255,255,255,.15);
+  cursor:pointer;transition:all .2s;
+}
+.btn-streetview:hover{
+  background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.3);
+  transform:translateY(-2px);
+}
+
+/* ── BOTTOM INFO STRIP ── */
+.loc-info-strip{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:16px;
+  margin-top:20px;
+}
+.loc-info-card{
+  background:rgba(255,255,255,.03);
+  border:1px solid rgba(255,255,255,.07);
+  border-radius:12px;
+  padding:20px 18px;
+  display:flex;align-items:center;gap:14px;
+  transition:border-color .2s,background .2s;
+}
+.loc-info-card:hover{
+  border-color:rgba(249,115,22,.3);
+  background:rgba(249,115,22,.04);
+}
+.loc-info-card-icon{
+  width:42px;height:42px;
+  background:rgba(249,115,22,.1);border-radius:10px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:20px;flex-shrink:0;
+}
+.loc-info-card-text strong{
+  display:block;font-size:14px;font-weight:700;color:#fff;margin-bottom:3px;
+}
+.loc-info-card-text span{font-size:12px;color:rgba(255,255,255,.45)}
+
+/* ── RESPONSIVE ── */
+@media(max-width:1024px){
+  .location-grid{grid-template-columns:1fr}
+  .loc-map-wrap{min-height:320px;border-radius:16px 16px 0 0}
+  .loc-info-strip{grid-template-columns:repeat(3,1fr)}
+}
+@media(max-width:640px){
+  .location-section{padding:60px 0}
+  .location-header{margin-bottom:36px}
+  .loc-address-card{padding:24px 20px}
+  .loc-contacts{padding:0 20px}
+  .loc-hours{padding:16px 20px}
+  .loc-map-wrap{min-height:260px}
+  .loc-cta-strip{padding:18px 20px}
+  .loc-cta-btns{width:100%}
+  .btn-directions,.btn-streetview{flex:1;justify-content:center}
+  .loc-info-strip{grid-template-columns:1fr}
+}
+
+</style>
+</head>
+<body>
+
+<!-- NOTIFICATION -->
+<div class="notification" id="notif">
+  <div class="notif-check">&#10003;</div>
+  <span id="notif-msg"></span>
+</div>
+
+<!-- NAVBAR -->
+<nav>
+  <div class="nav-inner">
+    <a class="logo" onclick="showPage('home')">
+      <img src="DevIT New Logo.png" alt="DEV IT" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+      
+    </a>
+    <div class="nav-links">
+      <a onclick="showPage('about')"     id="nav-about">About Us</a>
+      <a onclick="showPage('services')"  id="nav-services">Services</a>
+      <a onclick="showPage('solutions')" id="nav-solutions">Solutions</a>
+      <a onclick="showPage('products')"  id="nav-products">Products</a>
+      <a onclick="showPage('contact')"   id="nav-contact">Contacts</a>
+    </div>
+    <button class="btn-quote" onclick="showPage('contact')">Get A Quote</button>
+    <div class="hamburger" onclick="toggleMenu()">
+      <span></span><span></span><span></span>
+    </div>
+  </div>
+</nav>
+
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobileMenu">
+  <a onclick="showPage('about');toggleMenu()">About Us</a>
+  <a onclick="showPage('services');toggleMenu()">Services</a>
+  <a onclick="showPage('solutions');toggleMenu()">Solutions</a>
+  <a onclick="showPage('products');toggleMenu()">Products</a>
+  <a onclick="showPage('contact');toggleMenu()">Contacts</a>
+</div>
+
+<!-- ═══════════════════ HOME PAGE ═══════════════════ -->
+<div id="page-home" class="page active">
+  <div class="page-content">
+
+    <!-- HERO -->
+    <section class="hero">
+      <canvas id="hero-canvas"></canvas>
+      <div class="hero-bg"></div>
+      <div class="hero-grid"></div>
+      <div class="hero-scanline"></div>
+      <div class="hero-orb hero-orb-1"></div>
+      <div class="hero-orb hero-orb-2"></div>
+      <!-- floating tech badges -->
+      <div class="fb fb1"><span class="dot"></span>Cloud &amp; DevOps</div>
+      <div class="fb fb2"><span class="dot"></span>Cybersecurity</div>
+      <div class="fb fb3"><span class="dot"></span>AI &amp; Automation</div>
+      <div class="fb fb4"><span class="dot"></span>24/7 Managed IT</div>
+
+      <div class="hero-content">
+        <div class="hero-badge">15+ years engineering enterprise IT</div>
+        <h1 id="hero-h1">Welcome to <span class="brand">Dev IT</span><br>Group of Company</h1>
+        <p class="hero-p">DEV IT Services is a total hardware and network, end-to-end Software solutions provider. Led by our team of Microsoft Certified System Engineers, Software Engineers and supported by fully trained technicians.</p>
+        <!-- typewriter line -->
+        <div class="typer-bar" id="typer-bar">
+          <span class="typer-dot"></span>
+          <span id="typer-text"></span>
+          <span class="typer-cursor">|</span>
+        </div>
+        <div class="hero-btns">
+          <button class="btn-primary" onclick="showPage('services')">Get Started &#8594;</button>
+          <button class="btn-outline" onclick="showPage('about')">Learn More</button>
+        </div>
+        <!-- stat chips -->
+        <div class="hero-chips" id="hero-chips">
+          <div class="chip"><span class="chip-num" data-target="500" data-suffix="+">0</span><span class="chip-lbl">Projects</span></div>
+          <div class="chip"><span class="chip-num" data-target="98"  data-suffix="%">0</span><span class="chip-lbl">Satisfied</span></div>
+          <div class="chip"><span class="chip-num" data-target="250" data-suffix="+">0</span><span class="chip-lbl">Engineers</span></div>
+          <div class="chip"><span class="chip-num" data-target="15"  data-suffix="+">0</span><span class="chip-lbl">Yrs Exp</span></div>
+        </div>
+      </div>
+      <div class="hero-scroll" id="hero-scroll">
+        <div class="scroll-dot"></div>
+        <span>Scroll</span>
+      </div>
+    </section>
+
+    <!-- WHO WE ARE -->
+    <section style="padding:90px 5%;background:#fff">
+      <div style="max-width:1280px;margin:0 auto">
+        <div class="about-grid">
+          <div>
+            <div class="section-tag">Who We Are</div>
+            <h2 class="section-title" style="font-size:clamp(26px,4vw,44px)">Precision engineered <span>enterprise technology.</span></h2>
+            <p style="font-size:14px;color:#6B7280;line-height:1.8">We are the trusted partner for Malaysia's most demanding organizations. Delivering cloud, security, and infrastructure solutions with uncompromising quality.</p>
+            <ul class="about-list">
+              <li>Cloud Transformation &amp; Infrastructure Modernization</li>
+              <li>Cybersecurity &amp; Risk Protection</li>
+              <li>Custom Software Engineering &amp; Digital Innovation</li>
+            </ul>
+            <div class="about-quote">
+              <p>"Technology is not just about systems — it is about transforming ideas into the future."</p>
+              <div class="quote-author">
+                <div class="quote-avatar">
+                  <img src="Elumalai.jpeg" alt="Elumalai" onerror="this.parentElement.style.display='none';this.parentElement.nextElementSibling.style.display='flex'">
+                </div>
+                <div class="quote-avatar-initials" style="display:none">EL</div>
+                <div class="quote-info">
+                  <strong>Elumalai</strong>
+                  <span>CEO &amp; Founder</span>
+                </div>
+              </div>
+            </div>
+            <div class="about-cta">
+              <button class="btn-learn" onclick="showPage('about')">Learn More</button>
+              <div class="phone-cta">
+                <div class="phone-icon-wrap">
+                  <img src="Phone.png" alt="Phone" onerror="this.parentElement.innerHTML='&#128222;'">
+                </div>
+                <div class="phone-text">
+                  <span>Call Us 24/7 Anytime</span>
+                  <strong>+60122369161</strong>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="about-imgs">
+            <div class="about-img-main">
+              <img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=600&q=80" alt="Software Dev">
+            </div>
+            <div class="about-img-sm">
+              <img src="https://images.unsplash.com/photo-1544197150-b99a580bb7a8?w=400&q=80" alt="Cloud">
+            </div>
+            <div class="about-img-sm">
+              <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?w=400&q=80" alt="Hardware">
+              <div class="img-label">Hardware Solutions<span>Maintain &bull; Guide &bull; Operate</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- STATS -->
+    <div class="stats-bar">
+      <div class="stats-grid">
+        <div><div class="stat-num">500+</div><div class="stat-label">Completed Projects</div></div>
+        <div><div class="stat-num orange">98%</div><div class="stat-label">Happy Customers</div></div>
+        <div><div class="stat-num">250+</div><div class="stat-label">Engineers / Technician</div></div>
+        <div><div class="stat-num orange">15+</div><div class="stat-label">Years in Business</div></div>
+      </div>
+    </div>
+
+    <!-- CORE CAPABILITIES -->
+    <div class="services-bg">
+      <div class="services-inner">
+        <div class="services-header">
+          <div class="section-tag" style="justify-content:center">Our Services</div>
+          <h2 class="section-title">Core <span>Capabilities</span></h2>
+        </div>
+        <div class="services-grid">
+          <div class="service-card" onclick="showPage('services')"><div class="service-icon"><img src="IT infra Icon.png" alt="IT Infrastructure"></div><h3>IT Infrastructure</h3><p>Robust data center and network solutions built for enterprise scale.</p></div>
+          <div class="service-card" onclick="showPage('services')"><div class="service-icon">&#128640;</div><h3>Software Dev</h3><p>Custom enterprise applications and APIs designed for your business.</p></div>
+          <div class="service-card" onclick="showPage('services')"><div class="service-icon">&#128274;</div><h3>Cybersecurity</h3><p>Enterprise-grade threat protection and compliance frameworks.</p></div>
+          <div class="service-card" onclick="showPage('services')"><div class="service-icon">&#9729;</div><h3>Cloud Solutions</h3><p>AWS, AZURE, and GCP architecture and migration services.</p></div>
+          <div class="service-card" onclick="showPage('services')"><div class="service-icon">&#128295;</div><h3>Managed IT Services</h3><p>24/7 proactive monitoring, maintenance, and support.</p></div>
+          <div class="service-card" onclick="showPage('services')"><div class="service-icon">&#128200;</div><h3>Digital Transformation</h3><p>Strategic consulting to digitize operations and leverage data analytics.</p></div>
+        </div>
+        <div class="services-cta">
+          <p>We are driven to work, leadership &amp; attention to details.</p>
+          <button class="btn-primary" onclick="showPage('services')">More Services &#8594;</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- PROJECTS -->
+    <div class="projects-bg">
+      <div class="projects-inner">
+        <div class="projects-head">
+          <div>
+            <div class="section-tag" style="color:var(--orange)">Completed Projects</div>
+            <h2 class="section-title" style="color:#fff">Providing Effective<br>Solutions For <span>Projects</span></h2>
+          </div>
+          <div class="projects-desc">We deliver innovative technology solutions across industries. Our completed projects demonstrate our commitment to quality, precision, and client satisfaction across Malaysia and the region.</div>
+        </div>
+        <div class="projects-grid">
+          <div class="project-card" onclick="showPage('solutions')">
+            <div class="project-img">
+              <img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=600&q=80" alt="Software Dev">
+              <div class="project-tag">Software</div>
+              <div class="project-arrow">&#8599;</div>
+            </div>
+            <div class="project-info">
+              <h3>Software Development</h3>
+              <div class="project-meta">
+                <span>Location: <strong>Kuala Lumpur</strong></span>
+                <span>Time: <strong>5 Months</strong></span>
+              </div>
+            </div>
+          </div>
+          <div class="project-card" onclick="showPage('solutions')">
+            <div class="project-img">
+              <img src="https://images.unsplash.com/photo-1553413077-190dd305871c?w=600&q=80" alt="Digital Transformation">
+              <div class="project-tag" style="background:#10B981">Transformation</div>
+              <div class="project-arrow">&#8599;</div>
+            </div>
+            <div class="project-info">
+              <h3>Digital Transformation</h3>
+              <div class="project-meta">
+                <span>Location: <strong>Kuala Lumpur</strong></span>
+                <span>Time: <strong>2–3 days</strong></span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="projects-btns">
+          <button class="btn-primary" onclick="showPage('solutions')">More Projects</button>
+          <button class="btn-ghost"    onclick="showPage('contact')">Hire Us Now</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- CLIENTS -->
+    <div class="clients-section">
+      <div class="clients-inner">
+        <div>
+          <div class="section-tag">Clients &amp; Partners</div>
+          <h2 class="section-title" style="font-size:26px">Proud To Partner With<br>Best In Class <span>Clients</span></h2>
+        </div>
+        <div class="clients-logos">
+          <div class="client-logo">Standard<br>Chartered</div>
+          <div class="client-logo">INTERDEALS</div>
+          <div class="client-logo">SinaLar<br>Tech</div>
+          <div class="client-logo">ANDINA</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- INDUSTRIES -->
+    <div class="industries-bg">
+      <div class="industries-inner">
+        <div class="section-tag" style="justify-content:center">Industries Served</div>
+        <h2 class="section-title">Domain depth across <span>regulated industries</span></h2>
+        <p style="font-size:14px;color:#6B7280;max-width:520px;margin:0 auto">Two decades of context-specific expertise in the sectors that demand the highest standards of reliability and compliance.</p>
+        <div class="industries-grid">
+          <div class="industry-card" onclick="notify('Finance &amp; Banking sector')"><div class="industry-icon">&#127974;</div><h4>Finance &amp; Banking</h4><p>Secure and compliant financial technology solutions.</p></div>
+          <div class="industry-card" onclick="notify('Healthcare sector')"><div class="industry-icon">&#127973;</div><h4>Healthcare</h4><p>Digital health platforms and data management systems.</p></div>
+          <div class="industry-card" onclick="notify('Manufacturing sector')"><div class="industry-icon">&#127981;</div><h4>Manufacturing</h4><p>Industry 4.0 automation and smart factory solutions.</p></div>
+          <div class="industry-card" onclick="notify('Government sector')"><div class="industry-icon">&#127963;</div><h4>Government</h4><p>e-Government platforms and public sector digital services.</p></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CTA BANNER -->
+    <div class="cta-banner">
+      <h2>Ready to Transform Your Business?</h2>
+      <p>Let's build the future together. Contact us today for a free consultation.</p>
+      <button onclick="showPage('contact')">Get A Free Quote &#8594;</button>
+    </div>
+
+    <!-- FOOTER HOME -->
+    <footer>
+      <div class="footer-inner">
+        <div class="footer-grid">
+          <div class="footer-brand">
+            <div class="logo" onclick="showPage('home')" style="cursor:pointer">
+              <div class="logo-fallback">DEV</div>
+              <div class="logo-text" style="color:#fff">Dev IT<span>Group of Company</span></div>
+            </div>
+            <p>DEV IT Services is a total hardware and network, end-to-end Software solutions provider powered by Microsoft Certified professionals.</p>
+            <div class="footer-social">
+              <div class="social-btn" onclick="notify('Facebook')">f</div>
+              <div class="social-btn" onclick="notify('LinkedIn')">in</div>
+              <div class="social-btn" onclick="notify('Twitter')">&#10005;</div>
+              <div class="social-btn" onclick="notify('Instagram')">&#9900;</div>
+            </div>
+          </div>
+          <div class="footer-col">
+            <h4>Quick Links</h4>
+            <ul class="footer-links">
+              <li><a onclick="showPage('about')">About Us</a></li>
+              <li><a onclick="showPage('services')">Services</a></li>
+              <li><a onclick="showPage('solutions')">Solutions</a></li>
+              <li><a onclick="showPage('products')">Products</a></li>
+              <li><a onclick="showPage('contact')">Contact</a></li>
+            </ul>
+          </div>
+          <div class="footer-col">
+            <h4>Services</h4>
+            <ul class="footer-links">
+              <li>IT Infrastructure</li><li>Software Development</li>
+              <li>Cybersecurity</li><li>Cloud Solutions</li>
+              <li>Managed IT Services</li><li>Digital Transformation</li>
+            </ul>
+          </div>
+          <div class="footer-col">
+            <h4>Contact</h4>
+            <div class="footer-contact-item"><div class="fci-icon">&#128205;</div><p>Kuala Lumpur, Malaysia</p></div>
+            <div class="footer-contact-item"><div class="fci-icon">&#128222;</div><p>+60122369161</p></div>
+            <div class="footer-contact-item"><div class="fci-icon">&#9993;</div><p>info@devitgroup.com.my</p></div>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <p>&#169; 2026 <span>DEV IT Group of Company</span>. All rights reserved.</p>
+          <p>Built with &#10084; in Malaysia</p>
+        </div>
+      </div>
+    </footer>
+  </div>
+</div>
+
+<!-- ═══════════════════ ABOUT PAGE ═══════════════════ -->
+<div id="page-about" class="page">
+  <div class="page-content">
+    <div class="page-hero">
+      <div class="page-hero-content">
+        <div class="breadcrumb">Home <span>/ About Us</span></div>
+        <h1>About <span>Dev IT</span></h1>
+        <p>Trusted by Malaysia's most demanding organizations for over 15 years of enterprise technology excellence.</p>
+      </div>
+    </div>
+    <section style="padding:80px 5%">
+      <div style="max-width:1280px;margin:0 auto">
+        <div class="about-grid" style="margin-bottom:80px">
+          <div>
+            <div class="section-tag">Our Story</div>
+            <h2 class="section-title">Building Malaysia's Digital <span>Future</span></h2>
+            <p style="font-size:14px;color:#6B7280;line-height:1.8;margin-bottom:18px">DEV IT Group of Company was founded with a singular mission: to deliver world-class technology solutions to Malaysian enterprises. Over 15 years, we've grown from a small IT support team to a full-scale technology powerhouse.</p>
+            <p style="font-size:14px;color:#6B7280;line-height:1.8;margin-bottom:30px">Today, we serve over 500 clients across finance, healthcare, manufacturing, and government sectors, deploying cutting-edge solutions that drive real business outcomes.</p>
+            <button class="btn-primary" onclick="showPage('contact')">Work With Us &#8594;</button>
+          </div>
+          <div style="border-radius:16px;overflow:hidden;height:380px">
+            <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?w=700&q=80" alt="Office" style="width:100%;height:100%;object-fit:cover">
+          </div>
+        </div>
+        <div style="text-align:center;margin-bottom:16px">
+          <div class="section-tag" style="justify-content:center">Our Values</div>
+          <h2 class="section-title">What Drives <span>Us Forward</span></h2>
+        </div>
+        <div class="about-values-grid">
+          <div class="value-card"><div class="value-icon">&#127919;</div><h4>Precision</h4><p>Every solution meticulously engineered to exact specifications.</p></div>
+          <div class="value-card"><div class="value-icon">&#129309;</div><h4>Partnership</h4><p>We build long-term relationships. Your success is our success.</p></div>
+          <div class="value-card"><div class="value-icon">&#128274;</div><h4>Security</h4><p>Security-first approach in every solution we architect and deploy.</p></div>
+          <div class="value-card"><div class="value-icon">&#9889;</div><h4>Innovation</h4><p>Continuously adopting emerging technologies to keep you ahead.</p></div>
+        </div>
+        <div style="margin-top:76px;text-align:center;margin-bottom:16px">
+          <div class="section-tag" style="justify-content:center">Our Team</div>
+          <h2 class="section-title">Meet The <span>Leadership</span></h2>
+        </div>
+        <div class="team-grid">
+          <div class="team-card"><div class="team-avatar"><img src="Elumalai.jpeg" alt="Elumalai" onerror="this.parentElement.innerHTML='EL'"></div><h4>Elumalai</h4><p>CEO &amp; Founder</p></div>
+          <div class="team-card"><div class="team-avatar">KV</div><h4>KALAIVAANI</h4><p>CTO</p></div>
+          <div class="team-card"><div class="team-avatar">DV</div><h4>DEVAVARSHAN</h4><p>PROJECT MANAGER</p></div>
+          <div class="team-card"><div class="team-avatar">DD</div><h4>DEVADHARSHAN</h4><p>SR.SOFTWARE CONSULTAN</p></div>
+        </div>
+      </div>
+    </section>
+    <div class="cta-banner"><h2>Join 500+ Satisfied Clients</h2><button onclick="showPage('contact')">Start Your Project &#8594;</button></div>
+    <footer><div class="footer-inner"><div class="footer-bottom"><p>&#169; 2026 <span>DEV IT Group of Company</span>. All rights reserved.</p><button class="footer-back" onclick="showPage('home')">&#8592; Back to Home</button></div></div></footer>
+  </div>
+</div>
+
+<!-- ═══════════════════ SERVICES PAGE ═══════════════════ -->
+<div id="page-services" class="page">
+  <div class="page-content">
+    <div class="page-hero">
+      <div class="page-hero-content">
+        <div class="breadcrumb">Home <span>/ Services</span></div>
+        <h1>Our <span>Services</span></h1>
+        <p>Comprehensive technology services tailored to power your business growth and digital transformation.</p>
+      </div>
+    </div>
+    <div class="services-page">
+      <div class="services-page-inner">
+        <div style="text-align:center;margin-bottom:44px">
+          <div class="section-tag" style="justify-content:center">What We Offer</div>
+          <h2 class="section-title">Enterprise-Grade <span>Technology Services</span></h2>
+        </div>
+        <div class="services-page-grid">
+          <div class="service-page-card"><div class="service-icon">&#128187;</div><h3>IT Infrastructure</h3><p>Design, deploy, and manage robust IT infrastructure that scales with your business.</p><ul class="service-features"><li>Data Center Design &amp; Management</li><li>Network Architecture</li><li>Server Virtualization</li><li>Disaster Recovery Planning</li></ul><button class="btn-learn" onclick="showPage('contact')">Get Quote</button></div>
+          <div class="service-page-card"><div class="service-icon">&#128640;</div><h3>Software Development</h3><p>Custom enterprise applications, web platforms, and APIs engineered for your business.</p><ul class="service-features"><li>Enterprise Web Applications</li><li>Mobile App Development</li><li>API Integration &amp; Development</li><li>Legacy System Modernization</li></ul><button class="btn-learn" onclick="showPage('contact')">Get Quote</button></div>
+          <div class="service-page-card"><div class="service-icon">&#128274;</div><h3>Cybersecurity</h3><p>Enterprise-grade security solutions with threat detection and compliance frameworks.</p><ul class="service-features"><li>Penetration Testing</li><li>SIEM Implementation</li><li>Compliance &amp; Audit (ISO 27001)</li><li>Security Awareness Training</li></ul><button class="btn-learn" onclick="showPage('contact')">Get Quote</button></div>
+          <div class="service-page-card"><div class="service-icon">&#9729;</div><h3>Cloud Solutions</h3><p>Accelerate your cloud journey across AWS, Microsoft Azure, and Google Cloud.</p><ul class="service-features"><li>Cloud Strategy &amp; Assessment</li><li>AWS / Azure / GCP Migration</li><li>Cloud Cost Optimization</li><li>Hybrid Cloud Architecture</li></ul><button class="btn-learn" onclick="showPage('contact')">Get Quote</button></div>
+          <div class="service-page-card"><div class="service-icon">&#128295;</div><h3>Managed IT Services</h3><p>24/7 proactive monitoring and support so you can focus on your core business.</p><ul class="service-features"><li>24/7 NOC Monitoring</li><li>Helpdesk &amp; IT Support</li><li>Patch Management</li><li>SLA-Backed Response</li></ul><button class="btn-learn" onclick="showPage('contact')">Get Quote</button></div>
+          <div class="service-page-card"><div class="service-icon">&#128200;</div><h3>Digital Transformation</h3><p>Strategic consulting to digitize operations and leverage data analytics for advantage.</p><ul class="service-features"><li>Digital Strategy Consulting</li><li>Process Automation (RPA)</li><li>Data Analytics &amp; BI</li><li>AI &amp; ML Implementation</li></ul><button class="btn-learn" onclick="showPage('contact')">Get Quote</button></div>
+        </div>
+      </div>
+    </div>
+    <footer><div class="footer-inner"><div class="footer-bottom"><p>&#169; 2026 <span>DEV IT Group of Company</span>. All rights reserved.</p><button class="footer-back" onclick="showPage('home')">&#8592; Back to Home</button></div></div></footer>
+  </div>
+</div>
+
+<!-- ═══════════════════ SOLUTIONS PAGE ═══════════════════ -->
+<div id="page-solutions" class="page">
+  <div class="page-content">
+    <div class="page-hero">
+      <div class="page-hero-content">
+        <div class="breadcrumb">Home <span>/ Solutions</span></div>
+        <h1>Our <span>Solutions</span></h1>
+        <p>Industry-specific technology solutions that deliver measurable results for your business.</p>
+      </div>
+    </div>
+    <div class="solutions-page">
+      <div class="solutions-inner">
+        <div class="solutions-tabs">
+          <button class="tab-btn active" onclick="filterSol(this,'all')">All</button>
+          <button class="tab-btn" onclick="filterSol(this,'software')">Software</button>
+          <button class="tab-btn" onclick="filterSol(this,'infrastructure')">Infrastructure</button>
+          <button class="tab-btn" onclick="filterSol(this,'cloud')">Cloud</button>
+          <button class="tab-btn" onclick="filterSol(this,'security')">Security</button>
+        </div>
+        <div id="sol-container">
+          <div class="solution-item" data-cat="software">
+            <div class="sol-img"><img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=600&q=80" alt="Software"></div>
+            <div class="sol-content"><div class="sol-num">01</div><div class="section-tag">Software</div><h3>Software <span style="color:var(--orange)">Development</span></h3><p>End-to-end custom software solutions from requirements gathering to deployment and ongoing support.</p><ul class="about-list"><li>Agile delivery methodology</li><li>Scalable cloud-native architecture</li><li>Post-launch support &amp; maintenance</li></ul><button class="btn-primary" onclick="showPage('contact')">Discuss Project &#8594;</button></div>
+          </div>
+          <div class="solution-item reverse" data-cat="infrastructure">
+            <div class="sol-img"><img src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=600&q=80" alt="Infrastructure"></div>
+            <div class="sol-content"><div class="sol-num">02</div><div class="section-tag">Infrastructure</div><h3>IT <span style="color:var(--orange)">Infrastructure</span></h3><p>Design and deploy resilient IT infrastructure that underpins your entire digital operation with maximum uptime.</p><ul class="about-list"><li>99.99% uptime SLA</li><li>Redundant architecture design</li><li>Real-time monitoring &amp; alerting</li></ul><button class="btn-primary" onclick="showPage('contact')">Get Assessment &#8594;</button></div>
+          </div>
+          <div class="solution-item" data-cat="cloud">
+            <div class="sol-img"><img src="https://images.unsplash.com/photo-1544197150-b99a580bb7a8?w=600&q=80" alt="Cloud"></div>
+            <div class="sol-content"><div class="sol-num">03</div><div class="section-tag">Cloud</div><h3>Cloud <span style="color:var(--orange)">Migration</span></h3><p>Seamless migration to the cloud with minimal disruption and maximum cost efficiency.</p><ul class="about-list"><li>Zero-downtime migration strategy</li><li>Multi-cloud &amp; hybrid expertise</li><li>FinOps cost management</li></ul><button class="btn-primary" onclick="showPage('contact')">Free Assessment &#8594;</button></div>
+          </div>
+          <div class="solution-item reverse" data-cat="security">
+            <div class="sol-img"><img src="https://images.unsplash.com/photo-1563986768609-322da13575f3?w=600&q=80" alt="Security"></div>
+            <div class="sol-content"><div class="sol-num">04</div><div class="section-tag">Security</div><h3>Cyber <span style="color:var(--orange)">Defense</span></h3><p>Comprehensive cybersecurity programs protecting your organization from evolving threats.</p><ul class="about-list"><li>SOC as a Service (24/7)</li><li>Zero-trust architecture</li><li>Regulatory compliance management</li></ul><button class="btn-primary" onclick="showPage('contact')">Security Audit &#8594;</button></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer><div class="footer-inner"><div class="footer-bottom"><p>&#169; 2026 <span>DEV IT Group of Company</span>. All rights reserved.</p><button class="footer-back" onclick="showPage('home')">&#8592; Back to Home</button></div></div></footer>
+  </div>
+</div>
+
+<!-- ═══════════════════ PRODUCTS PAGE ═══════════════════ -->
+<div id="page-products" class="page">
+  <div class="page-content">
+    <div class="page-hero">
+      <div class="page-hero-content">
+        <div class="breadcrumb">Home <span>/ Products</span></div>
+        <h1>Our <span>Products</span></h1>
+        <p>Purpose-built technology products designed to accelerate your digital capabilities from day one.</p>
+      </div>
+    </div>
+    <div class="products-page">
+      <div class="products-inner">
+        <div style="text-align:center;margin-bottom:44px">
+          <div class="section-tag" style="justify-content:center">Product Catalogue</div>
+          <h2 class="section-title">Ready-to-Deploy <span>Solutions</span></h2>
+        </div>
+        <div class="products-grid">
+          <div class="product-card"><div class="product-img"><img src="https://images.unsplash.com/photo-1563986768609-322da13575f3?w=500&q=80" alt="SecureGuard"></div><div class="product-body"><div class="product-badge">Cybersecurity</div><h3>SecureGuard Pro</h3><p>Enterprise endpoint protection with AI-powered threat detection and automated response.</p><div class="product-price">From RM 299<span>/mo</span></div><button class="btn-primary" style="margin-top:14px;width:100%;justify-content:center" onclick="showPage('contact')">Request Demo</button></div></div>
+          <div class="product-card"><div class="product-img"><img src="https://images.unsplash.com/photo-1544197150-b99a580bb7a8?w=500&q=80" alt="CloudBridge"></div><div class="product-body"><div class="product-badge">Cloud</div><h3>CloudBridge Platform</h3><p>Unified cloud management dashboard for multi-cloud environments. Monitor and optimize.</p><div class="product-price">From RM 499<span>/mo</span></div><button class="btn-primary" style="margin-top:14px;width:100%;justify-content:center" onclick="showPage('contact')">Request Demo</button></div></div>
+          <div class="product-card"><div class="product-img"><img src="https://images.unsplash.com/photo-1518770660439-4636190af475?w=500&q=80" alt="DevFlow"></div><div class="product-body"><div class="product-badge">Software</div><h3>DevFlow CI/CD</h3><p>Automated software delivery pipeline with security scanning and one-click deployment.</p><div class="product-price">From RM 199<span>/mo</span></div><button class="btn-primary" style="margin-top:14px;width:100%;justify-content:center" onclick="showPage('contact')">Request Demo</button></div></div>
+          <div class="product-card"><div class="product-img"><img src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=500&q=80" alt="InfraWatch"></div><div class="product-body"><div class="product-badge">Infrastructure</div><h3>InfraWatch 360</h3><p>Real-time infrastructure monitoring with intelligent alerting and automated remediation.</p><div class="product-price">From RM 399<span>/mo</span></div><button class="btn-primary" style="margin-top:14px;width:100%;justify-content:center" onclick="showPage('contact')">Request Demo</button></div></div>
+          <div class="product-card"><div class="product-img"><img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=500&q=80" alt="DataInsight"></div><div class="product-body"><div class="product-badge">Analytics</div><h3>DataInsight BI</h3><p>Business intelligence platform with drag-and-drop dashboards and predictive analytics.</p><div class="product-price">From RM 599<span>/mo</span></div><button class="btn-primary" style="margin-top:14px;width:100%;justify-content:center" onclick="showPage('contact')">Request Demo</button></div></div>
+          <div class="product-card"><div class="product-img" style="background:linear-gradient(135deg,#111,#222);display:flex;align-items:center;justify-content:center"><span style="font-family:'Barlow Condensed',sans-serif;font-size:48px;font-weight:900;color:var(--orange)">IT+</span></div><div class="product-body"><div class="product-badge">Managed Services</div><h3>ManagedCare Plus</h3><p>Complete IT outsourcing — helpdesk, monitoring, patching, and vCISO advisory bundled.</p><div class="product-price">Custom<span> pricing</span></div><button class="btn-primary" style="margin-top:14px;width:100%;justify-content:center" onclick="showPage('contact')">Get Custom Quote</button></div></div>
+        </div>
+      </div>
+    </div>
+    <footer><div class="footer-inner"><div class="footer-bottom"><p>&#169; 2026 <span>DEV IT Group of Company</span>. All rights reserved.</p><button class="footer-back" onclick="showPage('home')">&#8592; Back to Home</button></div></div></footer>
+  </div>
+</div>
+
+<!-- ═══════════════════ CONTACT PAGE ═══════════════════ -->
+<div id="page-contact" class="page">
+  <div class="page-content">
+    <div class="page-hero">
+      <div class="page-hero-content">
+        <div class="breadcrumb">Home <span>/ Contact</span></div>
+        <h1>Get In <span>Touch</span></h1>
+        <p>Ready to start your digital transformation? Talk to our expert team today.</p>
+      </div>
+    </div>
+    <div class="contact-page">
+      <div class="contact-inner">
+        <div>
+          <div class="section-tag">Contact Info</div>
+          <h2 class="section-title" style="font-size:30px">Let's Start a <span>Conversation</span></h2>
+          <p style="font-size:14px;color:#6B7280;line-height:1.8;margin-bottom:32px">Whether you need a quick quote or a detailed consultation, our team is ready to help you.</p>
+          <div class="contact-info-item"><div class="cil-icon">&#128205;</div><div><h4>Office Address</h4><p>No 3 & 3A, Jalan Sanggul 1A,<br>Bandar Puteri Klang,41200, Klang,Selangor D.E., Malaysia.</p></div></div>
+          <div class="contact-info-item"><div class="cil-icon">&#128222;</div><div><h4>Phone Number</h4><p>+60351616030<br>+60122369161 (Office Hours)</p></div></div>
+          <div class="contact-info-item"><div class="cil-icon">&#9993;</div><div><h4>Email Address</h4><p>kanna@devit.com.my<br>sales@devit.com.my</p></div></div>
+          <div class="contact-info-item"><div class="cil-icon">&#128336;</div><div><h4>Business Hours</h4><p>Monday &#8211; Friday: 9:00 AM &#8211; 6:00 PM<br>24/7 Emergency Support Available</p></div></div>
+        </div>
+        <div class="contact-form">
+          <h3>Send Us a Message</h3>
+          <p>Fill in the form and our team will get back to you within 24 hours.</p>
+          <div class="form-row">
+            <div class="form-group"><label>First Name</label><input type="text" id="cf-fname" placeholder="John"></div>
+            <div class="form-group"><label>Last Name</label><input type="text" id="cf-lname" placeholder="Doe"></div>
+          </div>
+          <div class="form-group"><label>Email Address</label><input type="email" id="cf-email" placeholder="john@company.com"></div>
+          <div class="form-group"><label>Phone Number</label><input type="tel" id="cf-phone" placeholder="+60 12 345 6789"></div>
+          <div class="form-group"><label>Service of Interest</label>
+            <select id="cf-service">
+              <option value="">Select a service...</option>
+              <option>IT Infrastructure</option><option>Software Development</option>
+              <option>Cybersecurity</option><option>Cloud Solutions</option>
+              <option>Managed IT Services</option><option>Digital Transformation</option>
+              <option>Products / Licensing</option><option>General Inquiry</option>
+            </select>
+          </div>
+          <div class="form-group"><label>Message</label><textarea id="cf-msg" placeholder="Tell us about your project or requirements..."></textarea></div>
+          <button class="form-submit" onclick="submitForm()">Send Message &#8594;</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════
+         OFFICE LOCATION SECTION
+    ═══════════════════════════════ -->
+    <div class="location-section">
+      <div class="location-inner">
+
+        <!-- Header -->
+        <div class="location-header">
+          <div class="section-tag">Our Location</div>
+          <h2>Visit Our <span>Office</span></h2>
+          <p>We're conveniently located in Bandar Puteri Klang. Drop by or reach us anytime — our team is always ready to help.</p>
+        </div>
+
+        <!-- Map (full width) -->
+        <div class="location-map-col">
+
+            <div class="loc-map-wrap">
+              <iframe
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3984.0!2d101.4456!3d3.0215!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31cdba7b5c7c8a8b%3A0x1234567890abcdef!2sJalan+Sanggul+1A%2C+Bandar+Puteri+Klang%2C+41200+Klang%2C+Selangor%2C+Malaysia!5e0!3m2!1sen!2smy!4v1700000000000!5m2!1sen!2smy&q=No+3+Jalan+Sanggul+1A+Bandar+Puteri+Klang+41200+Klang+Selangor+Malaysia"
+                allowfullscreen=""
+                loading="lazy"
+                referrerpolicy="no-referrer-when-downgrade"
+                title="DEV IT Group Office Location">
+              </iframe>
+              <!-- Map overlay badge -->
+              <div class="loc-map-overlay">
+                <p>&#128205; Office Location</p>
+                <strong>DEV IT Group HQ</strong>
+              </div>
+            </div>
+
+            <!-- CTA Strip -->
+            <div class="loc-cta-strip">
+              <div class="loc-cta-text">
+                <h4>Ready to visit us?</h4>
+                <p>Get turn-by-turn directions to our office.</p>
+              </div>
+              <div class="loc-cta-btns">
+                <a class="btn-directions"
+                   href="https://www.google.com/maps/dir/?api=1&destination=No+3+Jalan+Sanggul+1A+Bandar+Puteri+Klang+41200+Klang+Selangor+Malaysia"
+                   target="_blank" rel="noopener">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="3 11 22 2 13 21 11 13 3 11"/></svg>
+                  Get Directions
+                </a>
+                <a class="btn-streetview"
+                   href="https://maps.google.com/?q=No+3+Jalan+Sanggul+1A+Bandar+Puteri+Klang+41200+Klang+Selangor+Malaysia&layer=x"
+                   target="_blank" rel="noopener">
+                  &#127758; Open in Maps
+                </a>
+              </div>
+            </div>
+
+        </div><!-- /map col -->
+
+        <!-- Bottom 3-column Info Strip -->
+        <div class="loc-info-strip">
+          <div class="loc-info-card">
+            <div class="loc-info-card-icon">&#128663;</div>
+            <div class="loc-info-card-text">
+              <strong>By Car</strong>
+              <span>15 min from Shah Alam &bull; 20 min from KL via KESAS/NKVE</span>
+            </div>
+          </div>
+          <div class="loc-info-card">
+            <div class="loc-info-card-icon">&#128652;</div>
+            <div class="loc-info-card-text">
+              <strong>By Public Transport</strong>
+              <span>Bus from Klang Sentral &bull; Alight at Bandar Puteri Klang stop</span>
+            </div>
+          </div>
+          <div class="loc-info-card">
+            <div class="loc-info-card-icon">&#128205;</div>
+            <div class="loc-info-card-text">
+              <strong>Postcode / Area</strong>
+              <span>41200 Klang, Selangor D.E. &bull; Bandar Puteri Klang</span>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /location-inner -->
+    </div><!-- /location-section -->
+
+    <div style="background:#F9F9F9;padding:56px 5%;text-align:center;border-top:1px solid var(--border)">
+      <h3 style="font-size:20px;font-weight:800;margin-bottom:8px">Emergency IT Support?</h3>
+      <p style="font-size:14px;color:#6B7280;margin-bottom:18px">Our NOC team is available 24/7 for critical incidents.</p>
+      <a href="tel:+60122369161" style="background:var(--orange);color:#fff;padding:13px 30px;border-radius:6px;font-size:14px;font-weight:700;letter-spacing:1px;text-transform:uppercase;text-decoration:none;display:inline-block">&#128222; Call Now: +60122369161</a>
+    </div>
+    <footer><div class="footer-inner"><div class="footer-bottom"><p>&#169; 2026 <span>DEV IT Group of Company</span>. All rights reserved.</p><button class="footer-back" onclick="showPage('home')">&#8592; Back to Home</button></div></div></footer>
+  </div>
+</div>
+
+<!-- ═══════════════════ JAVASCRIPT ═══════════════════ -->
+<script>
+/* ── PAGE NAVIGATION ──────────────────────────────── */
+function showPage(id) {
+  document.querySelectorAll('.page').forEach(function(p) { p.classList.remove('active'); });
+  var pg = document.getElementById('page-' + id);
+  if (pg) pg.classList.add('active');
+  document.querySelectorAll('.nav-links a').forEach(function(a) { a.classList.remove('active'); });
+  var lnk = document.getElementById('nav-' + id);
+  if (lnk) lnk.classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  // re-run hero anim when returning home
+  if (id === 'home') { setTimeout(runHeroAnim, 80); }
+}
+function toggleMenu() {
+  document.getElementById('mobileMenu').classList.toggle('open');
+}
+function notify(msg) {
+  var n = document.getElementById('notif');
+  document.getElementById('notif-msg').textContent = msg;
+  n.classList.add('show');
+  setTimeout(function() { n.classList.remove('show'); }, 2800);
+}
+function submitForm() {
+  var ids = ['cf-fname','cf-lname','cf-email','cf-phone','cf-service','cf-msg'];
+  var ok = true;
+  ids.forEach(function(id) {
+    var el = document.getElementById(id);
+    if (!el.value.trim()) { el.style.borderColor = '#EF4444'; ok = false; }
+    else el.style.borderColor = '';
+  });
+  if (!ok) { notify('Please fill in all required fields'); return; }
+  notify('Message sent! We will contact you within 24 hours.');
+  ids.forEach(function(id) { document.getElementById(id).value = ''; });
+}
+function filterSol(btn, cat) {
+  document.querySelectorAll('.tab-btn').forEach(function(b) { b.classList.remove('active'); });
+  btn.classList.add('active');
+  document.querySelectorAll('.solution-item').forEach(function(item) {
+    item.style.display = (cat === 'all' || item.dataset.cat === cat) ? 'grid' : 'none';
+  });
+}
+window.addEventListener('scroll', function() {
+  document.querySelector('nav').style.boxShadow =
+    window.scrollY > 40 ? '0 2px 20px rgba(0,0,0,.09)' : 'none';
+});
+
+/* ── HERO ANIMATIONS ──────────────────────────────── */
+var _typerTid = null;
+function runHeroAnim() {
+  /* 1. Wrap H1 words */
+  var h1 = document.getElementById('hero-h1');
+  if (!h1) return;
+  /* rebuild only if not already wrapped */
+  if (!h1.querySelector('.hw')) {
+    var delay = 0.5;
+    var newNodes = [];
+    h1.childNodes.forEach(function(node) {
+      if (node.nodeType === 3) { /* text node */
+        var txt = node.textContent;
+        var words = txt.trim().split(/\s+/).filter(Boolean);
+        if (!words.length) return;
+        if (/^\s/.test(txt) && newNodes.length) newNodes.push(document.createTextNode(' '));
+        words.forEach(function(w, i) {
+          var hw = document.createElement('span');
+          hw.className = 'hw'; hw.style.animationDelay = delay + 's';
+          hw.textContent = w; newNodes.push(hw);
+          if (i < words.length - 1) newNodes.push(document.createTextNode(' '));
+          delay += 0.1;
+        });
+        if (/\s$/.test(txt)) newNodes.push(document.createTextNode(' '));
+      } else if (node.nodeType === 1) {
+        if (node.tagName === 'BR') {
+          newNodes.push(node.cloneNode());
+        } else if (node.tagName === 'SPAN') {
+          var spanClass = node.className;
+          var words2 = node.textContent.trim().split(/\s+/).filter(Boolean);
+          if (!words2.length) return;
+          words2.forEach(function(w, i) {
+            var hw = document.createElement('span');
+            hw.className = 'hw'; hw.style.animationDelay = delay + 's';
+            var inner = document.createElement('span');
+            if (spanClass) inner.className = spanClass;
+            inner.textContent = w; hw.appendChild(inner); newNodes.push(hw);
+            if (i < words2.length - 1) newNodes.push(document.createTextNode(' '));
+            delay += 0.1;
+          });
+        }
+      }
+    });
+    while (h1.firstChild) h1.removeChild(h1.firstChild);
+    newNodes.forEach(function(n) { h1.appendChild(n); });
+  }
+  /* trigger word visibility */
+  var words = h1.querySelectorAll('.hw');
+  words.forEach(function(w) {
+    w.classList.remove('visible');
+    var d = parseFloat(w.style.animationDelay || 0) * 1000;
+    setTimeout(function() { w.classList.add('visible'); }, d);
+  });
+
+  /* 2. Badge */
+  var badge = document.querySelector('.hero-badge');
+  if (badge) {
+    badge.style.opacity = '0'; badge.style.transform = 'translateY(-18px) scale(0.9)';
+    badge.style.transition = 'opacity .8s ease .25s, transform .8s cubic-bezier(.16,1,.3,1) .25s';
+    setTimeout(function() { badge.style.opacity = '1'; badge.style.transform = 'translateY(0) scale(1)'; }, 50);
+  }
+
+  /* 3. Paragraph */
+  var para = document.querySelector('.hero-p');
+  if (para) {
+    para.classList.remove('visible');
+    setTimeout(function() { para.classList.add('visible'); }, 1350);
+  }
+
+  /* 4. Typewriter bar */
+  var tyBar = document.getElementById('typer-bar');
+  var tyEl  = document.getElementById('typer-text');
+  if (tyBar && tyEl) {
+    clearTimeout(_typerTid);
+    tyEl.textContent = '';
+    tyBar.classList.remove('visible');
+    setTimeout(function() { tyBar.classList.add('visible'); }, 1600);
+    var phrases = ['End-to-End Software Solutions','Microsoft Certified Engineers',
+      'Cloud & Infrastructure Experts','Cybersecurity Specialists','24/7 Managed IT Services'];
+    var phIdx=0,chIdx=0,del=false;
+    function typeStep() {
+      var ph = phrases[phIdx];
+      if (!del) {
+        chIdx++;
+        tyEl.textContent = ph.slice(0,chIdx);
+        if (chIdx===ph.length) { del=true; _typerTid=setTimeout(typeStep,2000); return; }
+        _typerTid=setTimeout(typeStep,55);
+      } else {
+        chIdx--;
+        tyEl.textContent = ph.slice(0,chIdx);
+        if (chIdx===0) { del=false; phIdx=(phIdx+1)%phrases.length; _typerTid=setTimeout(typeStep,400); return; }
+        _typerTid=setTimeout(typeStep,28);
+      }
+    }
+    _typerTid=setTimeout(typeStep,2000);
+  }
+
+  /* 5. Buttons */
+  var btns = document.querySelectorAll('.hero-btns .btn-primary, .hero-btns .btn-outline');
+  btns.forEach(function(b,i) {
+    b.classList.remove('visible');
+    setTimeout(function() { b.classList.add('visible'); }, 1600 + i * 160);
+    b.style.transition = 'opacity .65s cubic-bezier(.34,1.56,.64,1), transform .65s cubic-bezier(.34,1.56,.64,1), background .2s, box-shadow .2s, color .2s, border-color .2s';
+  });
+
+  /* 6. Chips */
+  var chips = document.getElementById('hero-chips');
+  if (chips) {
+    chips.classList.remove('visible');
+    setTimeout(function() {
+      chips.classList.add('visible');
+      document.querySelectorAll('.chip-num').forEach(function(el) {
+        var target = parseInt(el.getAttribute('data-target'));
+        var suffix = el.getAttribute('data-suffix') || '+';
+        var start = null, dur = 1800;
+        function step(ts) {
+          if (!start) start = ts;
+          var p = Math.min((ts-start)/dur,1);
+          var e = 1-Math.pow(1-p,3);
+          el.textContent = Math.floor(e*target) + suffix;
+          if (p<1) requestAnimationFrame(step);
+          else el.textContent = target + suffix;
+        }
+        requestAnimationFrame(step);
+      });
+    }, 1950);
+  }
+
+  /* 7. Scroll indicator */
+  var scroll = document.getElementById('hero-scroll');
+  if (scroll) { scroll.classList.remove('visible'); setTimeout(function(){ scroll.classList.add('visible'); }, 2300); }
+
+  /* 8. Canvas particle network */
+  initCanvas();
+}
+
+/* ── CANVAS PARTICLE NETWORK ──────────────────────── */
+var canvasRunning = false;
+function initCanvas() {
+  var canvas = document.getElementById('hero-canvas');
+  if (!canvas) return;
+  var ctx = canvas.getContext('2d');
+  var hero = canvas.parentElement;
+
+  function resize() { canvas.width = hero.offsetWidth; canvas.height = hero.offsetHeight; }
+  resize();
+  if (!canvasRunning) { window.addEventListener('resize', resize); }
+
+  var mouse = { x: -9999, y: -9999 };
+  hero.addEventListener('mousemove', function(e) {
+    var r = canvas.getBoundingClientRect();
+    mouse.x = e.clientX - r.left;
+    mouse.y = e.clientY - r.top;
+  });
+
+  var N = 60;
+  function mkP() {
+    var ang = Math.random()*Math.PI*2, spd = Math.random()*.3+.07;
+    return { x:Math.random()*canvas.width, y:Math.random()*canvas.height,
+      vx:Math.cos(ang)*spd, vy:Math.sin(ang)*spd,
+      r:Math.random()*2+.8, a:Math.random()*.35+.12,
+      pulse:Math.random()*Math.PI*2, ps:Math.random()*.03+.01,
+      orange: Math.random()>.65 };
+  }
+  var pts = [];
+  for (var i=0;i<N;i++) pts.push(mkP());
+
+  var CONN = 130;
+  function frame() {
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    pts.forEach(function(p) {
+      p.x += p.vx; p.y += p.vy; p.pulse += p.ps;
+      if (p.x<-8) p.x=canvas.width+8;
+      if (p.x>canvas.width+8) p.x=-8;
+      if (p.y<-8) p.y=canvas.height+8;
+      if (p.y>canvas.height+8) p.y=-8;
+      var dx=p.x-mouse.x, dy=p.y-mouse.y, md=Math.sqrt(dx*dx+dy*dy);
+      if (md<90) { var f=(90-md)/90*.5; p.x+=(dx/md)*f; p.y+=(dy/md)*f; }
+      var a = p.a*(0.65+0.35*Math.sin(p.pulse));
+      ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+      ctx.fillStyle = p.orange ? 'rgba(249,115,22,'+a+')' : 'rgba(255,255,255,'+(a*.55)+')';
+      ctx.fill();
+    });
+    for (var i=0;i<pts.length;i++) {
+      for (var j=i+1;j<pts.length;j++) {
+        var a=pts[i],b=pts[j], dx=a.x-b.x, dy=a.y-b.y, d=Math.sqrt(dx*dx+dy*dy);
+        if (d<CONN) {
+          var la=(1-d/CONN)*.16;
+          ctx.beginPath(); ctx.moveTo(a.x,a.y); ctx.lineTo(b.x,b.y);
+          ctx.strokeStyle=(a.orange||b.orange)?'rgba(249,115,22,'+la+')':'rgba(255,255,255,'+(la*.4)+')';
+          ctx.lineWidth=.7; ctx.stroke();
+        }
+      }
+    }
+    pts.forEach(function(p) {
+      var dx=p.x-mouse.x,dy=p.y-mouse.y,d=Math.sqrt(dx*dx+dy*dy);
+      if (d<150) {
+        var la=(1-d/150)*.3;
+        ctx.beginPath(); ctx.moveTo(p.x,p.y); ctx.lineTo(mouse.x,mouse.y);
+        ctx.strokeStyle='rgba(249,115,22,'+la+')'; ctx.lineWidth=.5; ctx.stroke();
+      }
+    });
+    requestAnimationFrame(frame);
+  }
+  if (!canvasRunning) { canvasRunning=true; frame(); }
+}
+
+/* kick off on load */
+window.addEventListener('DOMContentLoaded', function() { runHeroAnim(); });
+</script>
+</body>
+</html>
